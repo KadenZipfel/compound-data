@@ -124,3 +124,17 @@ body {
 
 .header {
   height: 350px; }
+
+.footer {
+  height: 40px;
+  background: #E3E9EB;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: rgba(0, 0, 0, 0.75); }
+
+.footer__info {
+  font-size: 16px; }
+
+.footer__link {
+  color: rgba(0, 0, 0, 0.75); }
