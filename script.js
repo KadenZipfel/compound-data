@@ -2,7 +2,7 @@ class Form {
   constructor() {
     this.addressForm = document.querySelector('.addressForm');
     this.addressInput = document.querySelector('.addressInput');
-    this.hero = document.querySelector('.hero');
+    this.assets = document.querySelector('.assets');
   }
 
   _XHRRequest(url, callback) {
@@ -40,6 +40,12 @@ class Form {
     
       this._XHRRequest(addressUrl, (response) => {
         const data = JSON.parse(response);
+
+        // Remove old assets
+        const oldAssets = document.querySelectorAll('.asset');
+        oldAssets.forEach(asset => {
+          asset.parentNode.removeChild(asset);
+        });
         
         for(let i = 0; i < data.accounts[0].tokens.length; i++) {
           const tokenUrl = `https://api.compound.finance/api/v2/ctoken?addresses[]=${data.accounts[0].tokens[i].address}`;
@@ -50,7 +56,7 @@ class Form {
             // Create asset box
             const asset = document.createElement('div');
             asset.className = 'asset';
-            this.hero.appendChild(asset);
+            this.assets.appendChild(asset);
 
             // Add name
             const name = document.createElement('h4');
@@ -61,25 +67,25 @@ class Form {
             // Add interest rate
             const interestRate = document.createElement('p');
             interestRate.className = 'asset__value';
-            interestRate.innerHTML = `${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
+            interestRate.innerHTML = `Interest Rate: ${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
             asset.appendChild(interestRate);
 
             // Add balance
             const balance = document.createElement('p');
             balance.className = 'asset__value';
-            balance.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value).toFixed(2))}`;
+            balance.innerHTML = `Balance: $${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value).toFixed(2))}`;
             asset.appendChild(balance);
 
             // Add earned interest
             const earnedInterest = document.createElement('p');
             earnedInterest.className = 'asset__value';
-            earnedInterest.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
+            earnedInterest.innerHTML = `Accrued Interest: $${this._commafy(parseInt(data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
             asset.appendChild(earnedInterest);
 
             // Add yearly interest
             const yearlyInterest = document.createElement('p');
             yearlyInterest.className = 'asset__value';
-            yearlyInterest.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
+            yearlyInterest.innerHTML = `Yearly Interest: $${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
             asset.appendChild(yearlyInterest);
           });
         }
