@@ -1,5 +1,44 @@
 @import '../config/colors'
   
 .assets
-  height: calc(100vh - 350px)
+  min-height: calc(100vh - 350px)
   background: $color-white
+
+.asset-list
+  height: 100%
+  width: 100%
+  display: flex
+  flex-wrap: wrap
+  justify-content: center
+
+.asset
+  height: 300px
+  width: 400px
+  border: 1px solid $color-light-gray
+  border-radius: 8px
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  justify-content: space-evenly
+  padding: 24px
+  margin: 18px
+  background: white
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25)
+  margin-top: 0
+  margin-bottom: 32px
+  transform: translateY(-62px)
+  padding-top: 0
+  padding-left: 0
+
+.asset__name
+  margin: 0
+  padding: 20px 0
+  font-weight: 400
+  font-size: 22px
+  width: 100%
+  border-bottom: 1px solid $color-light-gray
+  padding-left: 24px
+
+.asset__value
+  padding-left: 24px
+  color: rgba(0, 0, 0, 0.75)

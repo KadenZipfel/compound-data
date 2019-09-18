@@ -2,7 +2,7 @@ class Form {
   constructor() {
     this.addressForm = document.querySelector('.form');
     this.addressInput = document.querySelector('.form__input');
-    this.assets = document.querySelector('.assets');
+    this.assets = document.querySelector('.asset-list');
   }
 
   _XHRRequest(url, callback) {
