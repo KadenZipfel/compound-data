@@ -18,6 +18,18 @@ class Form {
     }
   }
 
+  // https://stackoverflow.com/questions/6784894/add-commas-or-spaces-to-group-every-three-digits
+  _commafy(num) {
+    var str = num.toString().split('.');
+    if (str[0].length >= 5) {
+        str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+        str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+  }
+
   onSubmit() {
     this.addressForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -49,25 +61,25 @@ class Form {
             // Add interest rate
             const interestRate = document.createElement('p');
             interestRate.className = 'asset__value';
-            interestRate.innerHTML = tokenData.cToken[0].supply_rate.value;
+            interestRate.innerHTML = `${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
             asset.appendChild(interestRate);
 
             // Add balance
             const balance = document.createElement('p');
             balance.className = 'asset__value';
-            balance.innerHTML = data.accounts[0].tokens[i].supply_balance_underlying.value;
+            balance.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value).toFixed(2))}`;
             asset.appendChild(balance);
 
             // Add earned interest
             const earnedInterest = document.createElement('p');
             earnedInterest.className = 'asset__value';
-            earnedInterest.innerHTML = data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value;
+            earnedInterest.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
             asset.appendChild(earnedInterest);
 
             // Add yearly interest
             const yearlyInterest = document.createElement('p');
             yearlyInterest.className = 'asset__value';
-            yearlyInterest.innerHTML = data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value;
+            yearlyInterest.innerHTML = `$${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
             asset.appendChild(yearlyInterest);
           });
         }
