@@ -58,11 +58,22 @@ class Form {
             asset.className = 'asset';
             this.assets.appendChild(asset);
 
+            // Create asset header
+            const header = document.createElement('div');
+            header.className = 'asset__header';
+            asset.appendChild(header);
+
+            // Add icon
+            const icon = document.createElement('img');
+            icon.className = 'asset__icon'
+            icon.src = `img/${tokenData.cToken[0].symbol.slice(1)}.svg`;
+            header.appendChild(icon);
+
             // Add name
             const name = document.createElement('h4');
             name.className = 'asset__name';
-            name.innerHTML = tokenData.cToken[0].name;
-            asset.appendChild(name);
+            name.innerHTML = tokenData.cToken[0].name.slice(9);
+            header.appendChild(name);
 
             // Add interest rate
             const interestRate = document.createElement('p');
