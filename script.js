@@ -1,7 +1,7 @@
 class Form {
   constructor() {
-    this.addressForm = document.querySelector('.addressForm');
-    this.addressInput = document.querySelector('.addressInput');
+    this.addressForm = document.querySelector('.form');
+    this.addressInput = document.querySelector('.form__input');
     this.assets = document.querySelector('.assets');
   }
 
