@@ -1,2 +1,9 @@
+@import '../config/breakpoints'
+
 .header
   height: 350px
+  padding: 0 64px
+  +media($breakpoint-md)
+    padding: 0 32px
+  +media($breakpoint-sm)
+    padding: 0 18px

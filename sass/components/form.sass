@@ -2,7 +2,8 @@
   
 .form
   height: 140px
-  width: 460px
+  max-width: 400px
+  padding: 0 18px
   margin: 0 auto 40px
   display: flex
   flex-direction: column
@@ -15,15 +16,18 @@
   color: $color-white
   font-size: 28px
   margin: 0
+  +media($breakpoint-sm)
+    font-size: 20px
 
 .form__group
   display: flex
   flex-direction: column
   justify-content: center
+  width: 100%
 
 .form__input
   height: 32px
-  width: 390px
+  width: 100%
   font-size: 18px
   border: 1px solid $color-green
   border-top-right-radius: 8px
@@ -31,10 +35,12 @@
   text-align: center
   background: inherit
   color: $color-white
+  +media($breakpoint-sm)
+    font-size: 14px
 
 .form__button
   height: 32px
-  width: 390px
+  width: 100%
   font-size: 16px
   border: 1px solid $color-green
   border-bottom-right-radius: 8px

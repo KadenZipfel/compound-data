@@ -1,13 +1,17 @@
 .footer
-  height: 40px
+  min-height: 40px
   background: $color-light-gray
   display: flex
   align-items: center
   justify-content: space-evenly
+  flex-wrap: wrap
   color: rgba(0, 0, 0, 0.75)
 
 .footer__info
   font-size: 16px
+  text-align: center
+  +media($breakpoint-sm)
+    font-size: 12px
 
 .footer__link
   color: rgba(0, 0, 0, 0.75)

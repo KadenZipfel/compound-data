@@ -5,11 +5,12 @@
   display: flex
   align-items: center
   justify-content: space-between
-  padding: 0 64px
 
 .nav__brand
   color: $color-white
   text-decoration: none
+  +media($breakpoint-sm)
+    font-size: 24px
 
 .nav__icon
   height: 25px

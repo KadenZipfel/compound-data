@@ -27,6 +27,8 @@
   margin-top: 0
   margin-bottom: 32px
   transform: translateY(-72px)
+  +media($breakpoint-sm)
+    transform: translateY(-82px)
 
 .asset__header
   display: flex
@@ -36,6 +38,8 @@
   padding-top: 0
   width: 100%
   border-bottom: 1px solid $color-light-gray
+  +media($breakpoint-sm)
+    padding-left: 18px
 
 .asset__icon
   height: 50px
@@ -45,12 +49,21 @@
   font-weight: 400
   font-size: 22px
   padding-left: 12px
+  +media($breakpoint-sm)
+    font-size: 18px
+  +media($breakpoint-xs)
+    font-size: 16px
+    padding-left: 8px
 
 .asset__values
   display: flex
   flex-direction: column
   justify-content: space-evenly
+  +media($breakpoint-sm)
+    font-size: 14px
 
 .asset__value
   padding-left: 32px
   color: rgba(0, 0, 0, 0.75)
+  +media($breakpoint-sm)
+    padding-left: 24px
