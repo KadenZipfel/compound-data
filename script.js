@@ -93,25 +93,25 @@ class Form {
             // Add interest rate
             const interestRate = document.createElement('p');
             interestRate.className = 'asset__value';
-            interestRate.innerHTML = `Interest Rate: ${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
+            interestRate.innerHTML = `<strong>Interest Rate:</strong> ${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
             assetValues.appendChild(interestRate);
 
             // Add balance
             const balance = document.createElement('p');
             balance.className = 'asset__value';
-            balance.innerHTML = `Balance: $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value).toFixed(2))}`;
+            balance.innerHTML = `<strong>Balance:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value).toFixed(2))}`;
             assetValues.appendChild(balance);
 
             // Add earned interest
             const earnedInterest = document.createElement('p');
             earnedInterest.className = 'asset__value';
-            earnedInterest.innerHTML = `Accrued Interest: $${this._commafy(parseInt(tokenArray[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
+            earnedInterest.innerHTML = `<strong>Accrued Interest:</strong> $${this._commafy(parseInt(tokenArray[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
             assetValues.appendChild(earnedInterest);
 
             // Add yearly interest
             const yearlyInterest = document.createElement('p');
             yearlyInterest.className = 'asset__value';
-            yearlyInterest.innerHTML = `Yearly Interest: $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
+            yearlyInterest.innerHTML = `<strong>Yearly Interest:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
             assetValues.appendChild(yearlyInterest);
           });
         }
