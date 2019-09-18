@@ -13,6 +13,10 @@ class Form {
   
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState == 4 && xhr.status == 200) {
+        if(document.querySelector('.spinner')) {
+          const spinner = document.querySelector('.spinner');
+          this.assets.removeChild(spinner);
+        }
         callback(xhr.responseText);
       }
     }
@@ -39,6 +43,10 @@ class Form {
       const addressUrl = `https://api.compound.finance/api/v2/account?addresses[]=${address}`;
     
       this._XHRRequest(addressUrl, (response) => {
+        const spinner = document.createElement('div');
+        spinner.className = 'spinner';
+        this.assets.append(spinner);
+
         const data = JSON.parse(response);
 
         // Remove old assets
@@ -47,9 +55,11 @@ class Form {
           asset.parentNode.removeChild(asset);
         });
         
-        for(let i = 0; i < data.accounts[0].tokens.length; i++) {
-          const tokenUrl = `https://api.compound.finance/api/v2/ctoken?addresses[]=${data.accounts[0].tokens[i].address}`;
-          
+        const tokenArray = data.accounts[0].tokens;
+        
+        for(let i = 0; i < tokenArray.length; i++) {
+          const tokenUrl = `https://api.compound.finance/api/v2/ctoken?addresses[]=${tokenArray[i].address}`;
+
           this._XHRRequest(tokenUrl, (response) => {
             const tokenData = JSON.parse(response);
 
@@ -84,19 +94,19 @@ class Form {
             // Add balance
             const balance = document.createElement('p');
             balance.className = 'asset__value';
-            balance.innerHTML = `Balance: $${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value).toFixed(2))}`;
+            balance.innerHTML = `Balance: $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value).toFixed(2))}`;
             asset.appendChild(balance);
 
             // Add earned interest
             const earnedInterest = document.createElement('p');
             earnedInterest.className = 'asset__value';
-            earnedInterest.innerHTML = `Accrued Interest: $${this._commafy(parseInt(data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
+            earnedInterest.innerHTML = `Accrued Interest: $${this._commafy(parseInt(tokenArray[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
             asset.appendChild(earnedInterest);
 
             // Add yearly interest
             const yearlyInterest = document.createElement('p');
             yearlyInterest.className = 'asset__value';
-            yearlyInterest.innerHTML = `Yearly Interest: $${this._commafy(parseInt(data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
+            yearlyInterest.innerHTML = `Yearly Interest: $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
             asset.appendChild(yearlyInterest);
           });
         }

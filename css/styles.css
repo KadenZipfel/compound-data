@@ -12,7 +12,8 @@ body {
   padding: 0 64px; }
 
 .nav__brand {
-  color: #F5F7F8; }
+  color: #F5F7F8;
+  text-decoration: none; }
 
 .nav__icon {
   height: 25px; }
