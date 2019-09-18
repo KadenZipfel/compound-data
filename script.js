@@ -2,11 +2,7 @@ class Form {
   constructor() {
     this.addressForm = document.querySelector('.addressForm');
     this.addressInput = document.querySelector('.addressInput');
-    this.tokenName = document.querySelector('.tokenName');
-    this.totalInterest = document.querySelector('.totalInterest');
-    this.interestRate = document.querySelector('.interestRate');
-    this.balance = document.querySelector('.balance');
-    this.data;
+    this.hero = document.querySelector('.hero');
   }
 
   _XHRRequest(url, callback) {
@@ -34,16 +30,45 @@ class Form {
         const data = JSON.parse(response);
         
         for(let i = 0; i < data.accounts[0].tokens.length; i++) {
-          this.totalInterest.innerHTML += data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value;
-          this.balance.innerHTML += data.accounts[0].tokens[i].supply_balance_underlying.value;
-    
           const tokenUrl = `https://api.compound.finance/api/v2/ctoken?addresses[]=${data.accounts[0].tokens[i].address}`;
           
           this._XHRRequest(tokenUrl, (response) => {
             const tokenData = JSON.parse(response);
 
-            this.tokenName.innerHTML += tokenData.cToken[0].name;
-            this.interestRate.innerHTML += tokenData.cToken[0].supply_rate.value;
+            // Create asset box
+            const asset = document.createElement('div');
+            asset.className = 'asset';
+            this.hero.appendChild(asset);
+
+            // Add name
+            const name = document.createElement('h4');
+            name.className = 'asset__name';
+            name.innerHTML = tokenData.cToken[0].name;
+            asset.appendChild(name);
+
+            // Add interest rate
+            const interestRate = document.createElement('p');
+            interestRate.className = 'asset__value';
+            interestRate.innerHTML = tokenData.cToken[0].supply_rate.value;
+            asset.appendChild(interestRate);
+
+            // Add balance
+            const balance = document.createElement('p');
+            balance.className = 'asset__value';
+            balance.innerHTML = data.accounts[0].tokens[i].supply_balance_underlying.value;
+            asset.appendChild(balance);
+
+            // Add earned interest
+            const earnedInterest = document.createElement('p');
+            earnedInterest.className = 'asset__value';
+            earnedInterest.innerHTML = data.accounts[0].tokens[i].lifetime_supply_interest_accrued.value;
+            asset.appendChild(earnedInterest);
+
+            // Add yearly interest
+            const yearlyInterest = document.createElement('p');
+            yearlyInterest.className = 'asset__value';
+            yearlyInterest.innerHTML = data.accounts[0].tokens[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value;
+            asset.appendChild(yearlyInterest);
           });
         }
       });
