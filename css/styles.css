@@ -66,3 +66,10 @@ body {
 body {
   font-family: Work Sans, sans-serif;
   background: #070A0E; }
+
+.assets {
+  height: calc(100vh - 350px);
+  background: #F5F7F8; }
+
+.header {
+  height: 350px; }
