@@ -37,6 +37,51 @@ class Form {
     return str.join('.');
   }
 
+  _switchTabOnClick(supply, borrow) {
+    supply.addEventListener('click', () => {
+      if(supply.classList.contains('asset__tab--active')) {
+        return;
+      }
+      borrow.classList.remove('asset__tab--active');
+      supply.classList.add('asset__tab--active');
+
+      // Handle values
+      const assetNav = supply.parentNode;
+      const asset = assetNav.parentNode;
+      const values = Array.from(asset.childNodes);
+
+      values.forEach(value => {
+        if(value.classList.contains('asset__values--supply')) {
+          value.classList.add('asset__values--active');
+        }
+        if(value.classList.contains('asset__values--borrow')) {
+          value.classList.remove('asset__values--active');
+        }
+      });
+    });
+    borrow.addEventListener('click', () => {
+      if(borrow.classList.contains('asset__tab--active')) {
+        return;
+      }
+      supply.classList.remove('asset__tab--active');
+      borrow.classList.add('asset__tab--active');
+
+      // Handle values
+      const assetNav = supply.parentNode;
+      const asset = assetNav.parentNode;
+      const values = Array.from(asset.childNodes);
+
+      values.forEach(value => {
+        if(value.classList.contains('asset__values--borrow')) {
+          value.classList.add('asset__values--active');
+        }
+        if(value.classList.contains('asset__values--supply')) {
+          value.classList.remove('asset__values--active');
+        }
+      });
+    });
+  }
+
   onSubmit() {
     this.addressForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -61,6 +106,8 @@ class Form {
 
         const data = JSON.parse(response);
 
+        console.log('Data: ', data);
+
         if(data.accounts.length < 1) {
           spinner.parentNode.removeChild(spinner);
           this.error.style.display = 'block';
@@ -74,6 +121,8 @@ class Form {
 
           this._XHRRequest(tokenUrl, (response) => {
             const tokenData = JSON.parse(response);
+
+            console.log('Token Data: ', tokenData);
 
             // Create asset box
             const asset = document.createElement('div');
@@ -97,34 +146,84 @@ class Form {
             name.innerHTML = tokenData.cToken[0].name.slice(9);
             header.appendChild(name);
 
-            // Create asset value container
-            const assetValues = document.createElement('div');
-            assetValues.className = 'asset__values';
-            asset.appendChild(assetValues);
+            // Create asset nav
+            const nav = document.createElement('div');
+            nav.className = 'asset__nav';
+            asset.appendChild(nav);
+
+            // Create asset nav supply tab
+            const supply = document.createElement('a');
+            supply.className = 'asset__tab asset__tab--supply asset__tab--active';
+            supply.id = 'supply';
+            supply.innerHTML = 'Supply';
+            nav.appendChild(supply);
+
+            // Create asset nav borrow tab
+            const borrow = document.createElement('a');
+            borrow.className = 'asset__tab asset__tab--borrow';
+            borrow.id = 'borrow';
+            borrow.innerHTML = 'Borrow';
+            nav.appendChild(borrow);
+
+            // Create asset supply value container
+            const assetSupplyValues = document.createElement('div');
+            assetSupplyValues.className = 'asset__values asset__values--supply asset__values--active';
+            asset.appendChild(assetSupplyValues);
 
             // Add interest rate
-            const interestRate = document.createElement('p');
-            interestRate.className = 'asset__value';
-            interestRate.innerHTML = `<strong>Interest Rate:</strong> ${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}%`;
-            assetValues.appendChild(interestRate);
+            const supplyInterestRate = document.createElement('p');
+            supplyInterestRate.className = 'asset__value';
+            supplyInterestRate.innerHTML = `<strong>Interest Rate:</strong> ${(tokenData.cToken[0].supply_rate.value * 100).toFixed(2)}% APR`;
+            assetSupplyValues.appendChild(supplyInterestRate);
 
             // Add balance
-            const balance = document.createElement('p');
-            balance.className = 'asset__value';
-            balance.innerHTML = `<strong>Balance:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value).toFixed(2))}`;
-            assetValues.appendChild(balance);
+            const supplyBalance = document.createElement('p');
+            supplyBalance.className = 'asset__value';
+            supplyBalance.innerHTML = `<strong>Balance:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value).toFixed(2))}`;
+            assetSupplyValues.appendChild(supplyBalance);
 
             // Add earned interest
             const earnedInterest = document.createElement('p');
             earnedInterest.className = 'asset__value';
-            earnedInterest.innerHTML = `<strong>Accrued Interest:</strong> $${this._commafy(parseInt(tokenArray[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
-            assetValues.appendChild(earnedInterest);
+            earnedInterest.innerHTML = `<strong>Interest Earned:</strong> $${this._commafy(parseInt(tokenArray[i].lifetime_supply_interest_accrued.value).toFixed(2))}`;
+            assetSupplyValues.appendChild(earnedInterest);
 
             // Add yearly interest
-            const yearlyInterest = document.createElement('p');
-            yearlyInterest.className = 'asset__value';
-            yearlyInterest.innerHTML = `<strong>Yearly Interest:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
-            assetValues.appendChild(yearlyInterest);
+            const supplyYearlyInterest = document.createElement('p');
+            supplyYearlyInterest.className = 'asset__value';
+            supplyYearlyInterest.innerHTML = `<strong>Yearly Interest:</strong> $${this._commafy(parseInt(tokenArray[i].supply_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
+            assetSupplyValues.appendChild(supplyYearlyInterest);
+
+            // Create asset borrow value container
+            const assetBorrowValues = document.createElement('div');
+            assetBorrowValues.className = 'asset__values asset__values--borrow';
+            asset.appendChild(assetBorrowValues);
+
+            // Add interest rate
+            const borrowInterestRate = document.createElement('p');
+            borrowInterestRate.className = 'asset__value';
+            borrowInterestRate.innerHTML = `<strong>Interest Rate:</strong> ${(tokenData.cToken[0].borrow_rate.value * 100).toFixed(2)}% APR`;
+            assetBorrowValues.appendChild(borrowInterestRate);
+
+            // Add balance
+            const borrowBalance = document.createElement('p');
+            borrowBalance.className = 'asset__value';
+            borrowBalance.innerHTML = `<strong>Balance:</strong> $${this._commafy(parseInt(tokenArray[i].borrow_balance_underlying.value).toFixed(2))}`;
+            assetBorrowValues.appendChild(borrowBalance);
+
+            // Add earned interest
+            const owedInterest = document.createElement('p');
+            owedInterest.className = 'asset__value';
+            owedInterest.innerHTML = `<strong>Interest Owed:</strong> $${this._commafy(parseInt(tokenArray[i].lifetime_borrow_interest_accrued.value).toFixed(2))}`;
+            assetBorrowValues.appendChild(owedInterest);
+
+            // Add yearly interest
+            const borrowYearlyInterest = document.createElement('p');
+            borrowYearlyInterest.className = 'asset__value';
+            borrowYearlyInterest.innerHTML = `<strong>Yearly Interest:</strong> $${this._commafy(parseInt(tokenArray[i].borrow_balance_underlying.value * tokenData.cToken[0].supply_rate.value).toFixed(2))}`;
+            assetBorrowValues.appendChild(borrowYearlyInterest);
+
+            this._switchTabOnClick(supply, borrow);
           });
         }
       });
