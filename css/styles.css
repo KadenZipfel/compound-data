@@ -158,6 +158,12 @@ body {
   cursor: pointer;
   color: rgba(0, 0, 0, 0.75);
   transition: 0.2s color; }
+  @media (max-width: 460px) {
+    .asset__tab {
+      font-size: 18px; } }
+  @media (max-width: 330px) {
+    .asset__tab {
+      font-size: 16px; } }
 
 .asset__tab--active {
   color: #00D395; }
