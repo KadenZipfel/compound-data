@@ -20,7 +20,6 @@ class Form {
         }
         callback(xhr.responseText);
       } else if(xhr.status == 500) {
-        // Display error
         this.error.style.display = 'block';
       }
     }
@@ -41,6 +40,15 @@ class Form {
   onSubmit() {
     this.addressForm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      // Remove old assets
+      const oldAssets = document.querySelectorAll('.asset');
+      oldAssets.forEach(asset => {
+        asset.parentNode.removeChild(asset);
+      });
+
+      // Remove old error message
+      this.error.style.display = 'none';
     
       const address = this.addressInput.value;
     
@@ -53,11 +61,11 @@ class Form {
 
         const data = JSON.parse(response);
 
-        // Remove old assets
-        const oldAssets = document.querySelectorAll('.asset');
-        oldAssets.forEach(asset => {
-          asset.parentNode.removeChild(asset);
-        });
+        if(data.accounts.length < 1) {
+          spinner.parentNode.removeChild(spinner);
+          this.error.style.display = 'block';
+          return;
+        }
         
         const tokenArray = data.accounts[0].tokens;
         
