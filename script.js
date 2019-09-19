@@ -3,6 +3,7 @@ class Form {
     this.addressForm = document.querySelector('.form');
     this.addressInput = document.querySelector('.form__input');
     this.assets = document.querySelector('.asset-list');
+    this.error = document.querySelector('.error');
   }
 
   _XHRRequest(url, callback) {
@@ -18,6 +19,9 @@ class Form {
           this.assets.removeChild(spinner);
         }
         callback(xhr.responseText);
+      } else if(xhr.status == 500) {
+        // Display error
+        this.error.style.display = 'block';
       }
     }
   }
