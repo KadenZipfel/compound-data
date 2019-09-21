@@ -11,6 +11,7 @@
     - Balance
     - Interest Owed
     - Yearly Interest
+- [Perfect 100 score](https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fkadenzipfel.github.io%2Fcompound-data%2F&tab=desktop) on google page speed insights.
 
 # Don't have an ethereum address?
 Try playing around with addresses of some of the top holders:
